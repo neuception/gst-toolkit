@@ -1,7 +1,7 @@
 # gst-toolkit
 
-[![npm version](https://img.shields.io/npm/v/gst-toolkit.svg)](https://www.npmjs.com/package/gst-toolkit)
-[![license](https://img.shields.io/npm/l/gst-toolkit.svg)](./LICENSE)
+[![npm version](https://img.shields.io/npm/v/@neuception/gst-toolkit.svg)](https://www.npmjs.com/package/@neuception/gst-toolkit)
+[![license](https://img.shields.io/npm/l/@neuception/gst-toolkit.svg)](./LICENSE)
 
 Zero-dependency TypeScript toolkit for **Indian GST**:
 
@@ -17,7 +17,7 @@ Fully typed, tree-shakeable, ESM + CJS, no runtime dependencies.
 ## Install
 
 ```bash
-npm install gst-toolkit
+npm install @neuception/gst-toolkit
 ```
 
 ## Usage
@@ -30,7 +30,7 @@ import {
   calculateGST,
   amountInWords,
   formatINR,
-} from 'gst-toolkit';
+} from '@neuception/gst-toolkit';
 ```
 
 ### GSTIN validation

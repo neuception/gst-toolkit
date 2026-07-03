@@ -1,6 +1,9 @@
 {
-  "name": "gst-toolkit",
+  "name": "@neuception/gst-toolkit",
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Zero-dependency toolkit for Indian GST: GSTIN validation & checksum, GST calculation (CGST/SGST/IGST), and amount-in-words in the Indian numbering system.",
   "keywords": [
     "gst",
