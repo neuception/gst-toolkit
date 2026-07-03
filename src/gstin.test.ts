@@ -5,6 +5,7 @@ import {
   getStateFromGSTIN,
   getPANFromGSTIN,
   computeGstinCheckDigit,
+  maskGSTIN,
 } from './gstin';
 
 describe('computeGstinCheckDigit', () => {
@@ -67,5 +68,15 @@ describe('helpers', () => {
 
   it('getPANFromGSTIN extracts the PAN', () => {
     expect(getPANFromGSTIN('27AAPFU0939F1ZV')).toBe('AAPFU0939F');
+  });
+
+  it('exposes the holder type on a valid GSTIN', () => {
+    // Embedded PAN AAPFU0939F → 4th char 'F' → Firm / LLP
+    expect(validateGSTIN('27AAPFU0939F1ZV').holderType).toBe('Firm / LLP');
+  });
+
+  it('maskGSTIN keeps the state code and last five characters', () => {
+    expect(maskGSTIN('27AAPFU0939F1ZV')).toBe('27XXXXXXXX9F1ZV');
+    expect(maskGSTIN('bad')).toBe('bad');
   });
 });

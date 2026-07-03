@@ -9,6 +9,8 @@
  *   - char 15     : checksum character
  */
 
+import { getPANHolderType } from './pan.js';
+
 /** Base-36 alphabet used for the GSTIN checksum. */
 const CODEPOINT_CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const MOD = CODEPOINT_CHARS.length; // 36
@@ -94,6 +96,8 @@ export interface GstinValidationResult {
   state?: string;
   /** The 10-character PAN embedded in the GSTIN. */
   pan?: string;
+  /** Holder type derived from the embedded PAN (e.g. "Company"). */
+  holderType?: string;
 }
 
 /**
@@ -129,11 +133,13 @@ export function validateGSTIN(gstin: string): GstinValidationResult {
     };
   }
 
+  const pan = value.slice(2, 12);
   return {
     valid: true,
     stateCode,
     state: GST_STATE_CODES[stateCode],
-    pan: value.slice(2, 12),
+    pan,
+    holderType: getPANHolderType(pan),
   };
 }
 
@@ -152,4 +158,17 @@ export function getStateFromGSTIN(gstin: string): string | undefined {
 export function getPANFromGSTIN(gstin: string): string | undefined {
   if (typeof gstin !== 'string' || gstin.trim().length !== 15) return undefined;
   return gstin.trim().toUpperCase().slice(2, 12);
+}
+
+/**
+ * Mask the identifying middle of a GSTIN for safe display, keeping the
+ * state code and the last five characters visible.
+ *
+ * @example maskGSTIN('27AAPFU0939F1ZV') // => '27XXXXXXXX9F1ZV'
+ */
+export function maskGSTIN(gstin: string): string {
+  if (typeof gstin !== 'string') return gstin;
+  const value = gstin.trim().toUpperCase();
+  if (value.length !== 15) return gstin;
+  return value.slice(0, 2) + 'X'.repeat(8) + value.slice(10);
 }

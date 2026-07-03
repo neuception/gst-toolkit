@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { numberToIndianWords, amountInWords, formatINR } from './currency';
+import { numberToIndianWords, amountInWords, formatINR, roundOff } from './currency';
 
 describe('numberToIndianWords', () => {
   it('handles zero', () => {
@@ -39,5 +39,17 @@ describe('formatINR', () => {
 
   it('can omit the symbol', () => {
     expect(formatINR(1000, { symbol: false })).toBe('1,000.00');
+  });
+});
+
+describe('roundOff', () => {
+  it('rounds up and reports a positive adjustment', () => {
+    expect(roundOff(1180.6)).toEqual({ rounded: 1181, roundOff: 0.4 });
+  });
+  it('rounds down and reports a negative adjustment', () => {
+    expect(roundOff(1180.4)).toEqual({ rounded: 1180, roundOff: -0.4 });
+  });
+  it('leaves whole rupees unchanged', () => {
+    expect(roundOff(1180)).toEqual({ rounded: 1180, roundOff: 0 });
   });
 });

@@ -1,5 +1,25 @@
 /** Currency helpers: amount-in-words (Indian numbering) and INR formatting. */
 
+/** Round to 2 decimals, avoiding binary float artefacts. */
+function round2(n: number): number {
+  return Math.round((n + Number.EPSILON) * 100) / 100;
+}
+
+/**
+ * Round an invoice total to the nearest rupee and report the adjustment,
+ * for the "Round Off" line commonly printed on Indian invoices.
+ *
+ * @example roundOff(1180.60) // => { rounded: 1181, roundOff: 0.4 }
+ * @example roundOff(1180.40) // => { rounded: 1180, roundOff: -0.4 }
+ */
+export function roundOff(amount: number): { rounded: number; roundOff: number } {
+  if (!Number.isFinite(amount)) {
+    throw new Error('amount must be a finite number');
+  }
+  const rounded = Math.round(amount);
+  return { rounded, roundOff: round2(rounded - amount) };
+}
+
 const ONES = [
   '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
   'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen',
